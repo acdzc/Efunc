@@ -1018,3 +1018,489 @@ URL 与 Base64 编解码工具。
 ### 50.12 人脸检测
 
 `OCV_FaceDetect`、`OCV_FaceDetectWithParams`
+
+---
+
+## 51. L Algorithm (Sorting and Searching)
+
+> Source File: `utils/algorithm.go` | Purpose: Common sorting, searching algorithms and LRU cache implementation
+
+### Sorting Algorithms
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `QuickSort` | `func QuickSort(nums []int)` | Quick sort (ascending), modifies original slice |
+| `MergeSort` | `func MergeSort(nums []int) []int` | Merge sort (ascending), returns new slice |
+| `InsertionSort` | `func InsertionSort(nums []int)` | Insertion sort (ascending), modifies original slice |
+| `SelectionSort` | `func SelectionSort(nums []int)` | Selection sort (ascending), modifies original slice |
+
+**Example**:
+
+```go
+nums := []int{5, 2, 8, 1, 9}
+QuickSort(nums)              // [1, 2, 5, 8, 9]
+sorted := MergeSort(nums)    // does not modify original
+```
+
+### Searching Algorithms
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `BinarySearch` | `func BinarySearch(nums []int, target int) int` | Binary search; returns -1 if not found |
+| `LinearSearch` | `func LinearSearch[T comparable](slice []T, target T) int` | Linear search; generic support |
+
+**Example**:
+
+```go
+nums := []int{1, 2, 5, 8, 9}
+idx := BinarySearch(nums, 5)     // 2
+idx = LinearSearch([]string{"a","b"}, "b")  // 1
+```
+
+### LRU Cache
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `NewLRUCache` | `func NewLRUCache(capacity int) *LRUCache` | Create LRU cache instance |
+| `(LRUCache) Get` | `func (l *LRUCache) Get(key int) (interface{}, bool)` | Get value |
+| `(LRUCache) Put` | `func (l *LRUCache) Put(key int, value interface{})` | Put value |
+| `(LRUCache) Clear` | `func (l *LRUCache) Clear()` | Clear cache |
+| `(LRUCache) Size` | `func (l *LRUCache) Size() int` | Get cache size |
+
+**Example**:
+
+```go
+cache := NewLRUCache(3)
+cache.Put(1, "one")
+val, ok := cache.Get(1)  // "one", true
+```
+
+---
+
+## 52. C Compare (Numerical Comparison)
+
+> Source File: `utils/compare.go` | Purpose: Various comparison functions for different types
+
+### Equality Comparison
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Equal` | `func Equal[T comparable](a, b T) bool` | Type + value equality |
+| `DeepEqual` | `func DeepEqual(a, b interface{}) bool` | Deep value equality (reflect.DeepEqual) |
+
+**Example**:
+
+```go
+Equal(1, 1)        // true
+DeepEqual([]int{1,2}, []int{1,2})  // true
+```
+
+### Ordering Comparison
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `LessThan` | `func LessThan[T constraints.Ordered](left, right T) bool` | left < right |
+| `GreaterThan` | `func GreaterThan[T constraints.Ordered](left, right T) bool` | left > right |
+| `LessOrEqual` | `func LessOrEqual[T constraints.Ordered](left, right T) bool` | left <= right |
+| `GreaterOrEqual` | `func GreaterOrEqual[T constraints.Ordered](left, right T) bool` | left >= right |
+
+**Example**:
+
+```go
+LessThan(1, 2)    // true
+GreaterThan(3, 2) // true
+```
+
+### Float Comparison
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `FloatApproxEqual` | `func FloatApproxEqual(a, b, delta float64) bool` | Approximately equal within delta |
+
+**Example**:
+
+```go
+FloatApproxEqual(3.14159, 3.14160, 0.0001)  // true
+```
+
+---
+
+## 53. D Condition (Conditional Judgment)
+
+> Source File: `utils/condition.go` | Purpose: Boolean logic operations and conditional judgment
+
+### Truth Value Judgment
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Bool` | `func Bool(value interface{}) bool` | Judge truthiness of value |
+
+**Example**:
+
+```go
+Bool(true)       // true
+Bool("")         // false
+Bool(0)          // false
+```
+
+### Logical Operations
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `And` | `func And(a, b bool) bool` | Logical AND (&&) |
+| `Or` | `func Or(a, b bool) bool` | Logical OR (\|\|) |
+| `Xor` | `func Xor(a, b bool) bool` | Logical XOR |
+| `Xnor` | `func Xnor(a, b bool) bool` | Logical XNOR |
+| `Nor` | `func Nor(a, b bool) bool` | Logical NOR |
+| `Nand` | `func Nand(a, b bool) bool` | Logical NAND |
+
+### Ternary Operator
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `TernaryOperator` | `func TernaryOperator[T any](condition bool, trueVal, falseVal T) T` | Generic ternary operator |
+
+**Example**:
+
+```go
+result := TernaryOperator(true, "yes", "no")  // "yes"
+age := TernaryOperator(age >= 18, "adult", "minor")
+```
+
+---
+
+## 54. C Convertor (Type Conversion)
+
+> Source File: `utils/convertor.go` | Purpose: Deep copy, struct conversion, pointer operations
+
+### Deep Clone
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `DeepClone` | `func DeepClone(src interface{}) (interface{}, error)` | Deep clone (JSON serialization) |
+
+**Example**:
+
+```go
+src := map[string]int{"a": 1, "b": 2}
+dst, _ := DeepClone(src)
+```
+
+### Struct Conversion
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `StructToMap` | `func StructToMap(s interface{}) (map[string]interface{}, error)` | Struct to Map |
+| `MapToStruct` | `func MapToStruct(m map[string]interface{}, structPtr interface{}) error` | Map to struct |
+| `CopyProperties` | `func CopyProperties(source, destination interface{}) error` | Copy properties |
+
+**Example**:
+
+```go
+type User struct { Name string; Age int }
+user := User{Name: "John", Age: 25}
+m, _ := StructToMap(user)  // {"Name": "John", "Age": 25}
+```
+
+### Pointer Operations
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `PointerToValue` | `func PointerToValue[T any](ptr *T) T` | Pointer to value |
+| `ValueToPointer` | `func ValueToPointer[T any](value T) *T` | Value to pointer |
+| `SliceToPointers` | `func SliceToPointers[T any](values []T) []*T` | Slice to pointers |
+| `PointersToSlice` | `func PointersToSlice[T any](pointers []*T) []T` | Pointers to slice |
+
+### Byte Encoding
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `EncodeByte` | `func EncodeByte(data interface{}) ([]byte, error)` | Encode data to bytes |
+| `DecodeByte` | `func DecodeByte(data []byte, target interface{}) error` | Decode bytes to object |
+
+---
+
+## 55. M Math (Mathematical Operations)
+
+> Source File: `utils/math.go` | Purpose: Common mathematical calculations and statistics
+
+### Statistical Functions
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Sum` | `func Sum(nums []int) int` | Sum |
+| `Average` | `func Average(nums []int) float64` | Average |
+| `Max` | `func Max(nums []int) int` | Maximum |
+| `Min` | `func Min(nums []int) int` | Minimum |
+
+**Example**:
+
+```go
+nums := []int{1, 2, 3, 4, 5}
+Sum(nums)      // 15
+Average(nums)  // 3.0
+Max(nums)      // 5
+```
+
+### Sequence Functions
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Factorial` | `func Factorial(n int) int64` | Factorial |
+| `Fibonacci` | `func Fibonacci(n int) int64` | Fibonacci number |
+| `IsPrime` | `func IsPrime(n int) bool` | Check prime |
+
+**Example**:
+
+```go
+Factorial(5)   // 120
+Fibonacci(10)  // 55
+IsPrime(7)     // true
+```
+
+### Other Mathematical Functions
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Abs` | `func Abs(n int) int` | Absolute value |
+| `Pow` | `func Pow(base, exponent float64) float64` | Power |
+| `Sqrt` | `func Sqrt(n float64) float64` | Square root |
+| `PI` | `func PI() float64` | Pi constant |
+| `E` | `func E() float64` | Euler's number |
+
+---
+
+## 56. R Retry (Retry Mechanism)
+
+> Source File: `utils/retry.go` | Purpose: Retry execution with backoff strategies
+
+### Basic Retry
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Retry` | `func Retry[T any](fn func() (T, error), maxRetries int, interval time.Duration) (T, error)` | Fixed interval retry |
+
+**Example**:
+
+```go
+result, err := Retry(func() (string, error) {
+    return "success", nil
+}, 3, time.Second)
+```
+
+### Exponential Backoff Retry
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `ExponentialBackoffRetry` | `func ExponentialBackoffRetry[T any](fn func() (T, error), maxRetries int, baseInterval, maxInterval time.Duration) (T, error)` | Exponential backoff retry |
+
+**Example**:
+
+```go
+result, err := ExponentialBackoffRetry(fn, 5, time.Second, time.Minute)
+// Interval: 1s -> 2s -> 4s -> ... -> max 1min
+```
+
+### Conditional Retry
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `RetryWithCondition` | `func RetryWithCondition[T any](fn func() (T, error), shouldRetry func(error) bool, maxRetries int, interval time.Duration) (T, error)` | Retry based on error type |
+
+**Example**:
+
+```go
+RetryWithCondition(fn, func(err error) bool {
+    return err != nil && err.Error() == "retryable"
+}, 3, time.Second)
+```
+
+---
+
+## 57. S Slice (Slice Processing)
+
+> Source File: `utils/slice.go` | Purpose: Slice deduplication, intersection, difference, etc.
+
+### Deduplication and Set Operations
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Deduplicate` | `func Deduplicate(nums []int) []int` | Integer slice deduplication |
+| `GenericDeduplicate` | `func GenericDeduplicate[T comparable](slice []T) []T` | Generic deduplication |
+| `Difference` | `func Difference(a, b []int) []int` | Difference (a-b) |
+| `Intersection` | `func Intersection(a, b []int) []int` | Intersection |
+
+**Example**:
+
+```go
+a := []int{1, 2, 3, 4, 5}
+b := []int{3, 4, 5, 6, 7}
+Difference(a, b)    // [1, 2]
+Intersection(a, b)  // [3, 4, 5]
+```
+
+### Search and Filter
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Contains` | `func Contains[T comparable](slice []T, item T) bool` | Contains check |
+| `Filter` | `func Filter[T any](slice []T, condition func(T) bool) []T` | Condition filter |
+| `MapSlice` | `func MapSlice[T any, U any](slice []T, fn func(T) U) []U` | Map transformation |
+
+### Slice Operations
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Reverse` | `func Reverse(nums []int)` | Reverse integer slice |
+| `GenericReverse` | `func GenericReverse[T any](slice []T)` | Generic reverse |
+| `TakeFirstN` | `func TakeFirstN[T any](slice []T, n int) []T` | Take first N |
+| `TakeLastN` | `func TakeLastN[T any](slice []T, n int) []T` | Take last N |
+
+### Sorting
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Sort` | `func Sort(nums []int)` | Quick sort (ascending) |
+| `SortDescending` | `func SortDescending(nums []int)` | Quick sort (descending) |
+| `GenericSort` | `func GenericSort[T any](slice []T, less func(a, b T) bool)` | Generic sort |
+
+---
+
+## 58. S String (String Processing)
+
+> Source File: `utils/string.go` | Purpose: String reverse, format conversion, statistics, etc.
+
+### Reverse and Trim
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Reverse` | `func Reverse(s string) string` | Reverse string |
+| `TrimSpace` | `func TrimSpace(s string) string` | Trim leading/trailing spaces |
+| `TrimLeft` | `func TrimLeft(s string) string` | Trim left spaces |
+| `TrimRight` | `func TrimRight(s string) string` | Trim right spaces |
+
+**Example**:
+
+```go
+Reverse("hello")  // "olleh"
+TrimSpace("  hello  ")  // "hello"
+```
+
+### Case Conversion
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `ToLower` | `func ToLower(s string) string` | Convert to lowercase |
+| `ToUpper` | `func ToUpper(s string) string` | Convert to uppercase |
+| `FirstLetterToUpper` | `func FirstLetterToUpper(s string) string` | First letter uppercase |
+
+### Naming Conversion
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `CamelToSnake` | `func CamelToSnake(s string) string` | CamelCase to snake_case |
+| `SnakeToCamel` | `func SnakeToCamel(s string) string` | snake_case to CamelCase |
+
+**Example**:
+
+```go
+CamelToSnake("helloWorld")  // "hello_world"
+SnakeToCamel("user_name")   // "userName"
+```
+
+### Statistics and Judgment
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `CountCharacters` | `func CountCharacters(s string) map[rune]int` | Count character occurrences |
+| `CountWords` | `func CountWords(s string) int` | Count words |
+| `ContainsSubstring` | `func ContainsSubstring(s, substr string) bool` | Contains substring |
+| `HasPrefix` | `func HasPrefix(s, prefix string) bool` | Starts with prefix |
+| `HasSuffix` | `func HasSuffix(s, suffix string) bool` | Ends with suffix |
+
+### Replace and Split
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `ReplaceAll` | `func ReplaceAll(s, old, new string) string` | Global replace |
+| `Split` | `func Split(s, sep string) []string` | Split by separator |
+| `Join` | `func Join(parts []string, sep string) string` | Join strings |
+| `Repeat` | `func Repeat(s string, count int) string` | Repeat string |
+
+### Substring
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Substring` | `func Substring(s string, start int) string` | Substring from position |
+| `SubstringLength` | `func SubstringLength(s string, start, length int) string` | Substring of specified length |
+
+---
+
+## 59. M Map (Map Processing)
+
+> Source File: `utils/map.go` | Purpose: Map key-value queries, conversions, merges, etc.
+
+### Key-Value Extraction
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `GetKeys` | `func GetKeys[K comparable, V any](m map[K]V) []K` | Get all keys |
+| `GetValues` | `func GetValues[K comparable, V any](m map[K]V) []V` | Get all values |
+| `HasKey` | `func HasKey[K comparable, V any](m map[K]V, key K) bool` | Check if key exists |
+
+**Example**:
+
+```go
+m := map[string]int{"a": 1, "b": 2}
+GetKeys(m)      // ["a", "b"]
+GetValues(m)    // [1, 2]
+```
+
+### Safe Access
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `SafeGet` | `func SafeGet[K comparable, V any](m map[K]V, key K, defaultVal V) V` | Safe get with default |
+
+**Example**:
+
+```go
+SafeGet(m, "c", 0)  // 0 (returns default when key doesn't exist)
+```
+
+### Merge and Convert
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `MergeMaps` | `func MergeMaps[K comparable, V any](maps ...map[K]V) map[K]V` | Merge multiple maps |
+| `MapToPairs` | `func MapToPairs[K comparable, V any](m map[K]V) [][]interface{}` | Map to 2D slice |
+| `PairsToMap` | `func PairsToMap(pairs [][]interface{}) map[interface{}]interface{}` | 2D slice to map |
+
+### Filter and Transform
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `FilterMap` | `func FilterMap[K comparable, V any](m map[K]V, condition func(K, V) bool) map[K]V` | Filter map |
+| `MapValues` | `func MapValues[K comparable, V any, U any](m map[K]V, fn func(V) U) map[K]U` | Transform values |
+
+### Other Operations
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `MapLength` | `func MapLength[K comparable, V any](m map[K]V) int` | Map length |
+| `ClearMap` | `func ClearMap[K comparable, V any](m map[K]V)` | Clear map |
+| `ReverseMap` | `func ReverseMap[K comparable, V comparable](m map[K]V) map[V]K` | Reverse map |
+| `ExtractKeys` | `func ExtractKeys[K comparable, V any](maps ...map[K]V) map[K]struct{}` | Extract all keys |
+| `ExtractValues` | `func ExtractValues[K comparable, V comparable](maps ...map[K]V) map[V]struct{}` | Extract all values |
+
+**Example**:
+
+```go
+m1 := map[string]int{"a": 1}
+m2 := map[string]int{"b": 2}
+merged := MergeMaps(m1, m2)  // {"a": 1, "b": 2}
+
+keys := ExtractKeys(m1, m2)  // {"a": {}, "b": {}}
+```
+
+---

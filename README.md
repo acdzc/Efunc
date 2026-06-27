@@ -6,10 +6,10 @@
 
 中文命名的工具函数库，涵盖编码转换、加密校验、文本处理、文件操作、网络请求、并发安全数据结构、数据库操作、权限管理等常用功能
 
-[![Version](https://img.shields.io/badge/Version-v2.5.1-blue?style=flat-square)](https://github.com/yuan71058/Efunc/releases)
+[![Version](https://img.shields.io/badge/Version-v2.5.2-blue?style=flat-square)](https://github.com/yuan71058/Efunc/releases)
 [![Go Version](https://img.shields.io/badge/Go-%3E%3D1.18-00ADD8?style=flat-square&logo=go)](https://go.dev/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Functions](https://img.shields.io/badge/Functions-800%2B-orange?style=flat-square)](API_Reference.md)
+[![Functions](https://img.shields.io/badge/Functions-935%2B-orange?style=flat-square)](API_Reference.md)
 [![Go Reference](https://pkg.go.dev/badge/github.com/yuan71058/Efunc.svg)](https://pkg.go.dev/github.com/yuan71058/Efunc)
 
 [快速开始](#-快速开始) · [模块一览](#-模块一览) · [命名规则](#-命名规则) · [更新日志](#-更新日志)
@@ -33,6 +33,7 @@
 - 🛡 **权限管理** — RBAC / ABAC 权限控制
 - 🧮 **表达式计算** — 数学/逻辑表达式求值
 - ✅ **数据校验** — 结构体字段验证
+- 🔢 **算法工具** — 排序/搜索/LRU 缓存/统计运算（lancet 集成）
 
 ## 📥 安装
 
@@ -168,7 +169,7 @@ Demo 涵盖内容：
 | `L_WS客户端` | WebSocket 客户端（文本/二进制/JSON） |
 | `L_HTTP服务端` | HTTP 服务端（路由/中间件/静态文件/JSON API） |
 
-### 🔧 utils — 工具函数（700+）
+### 🔧 utils — 工具函数（935+）
 
 #### 基础模块
 
@@ -219,7 +220,21 @@ Demo 涵盖内容：
 | 🗄 | `D数据库` | `xorm` | ORM 数据库操作（MySQL/SQLite） |
 | 🪟 | `C窗口` | `user32.dll` | Windows 窗口操作（查找/枚举/消息/移动） |
 | ⚙️ | `C进程` | `kernel32.dll` | Windows 进程管理（创建/枚举/终止/优先级） |
-| 👁 | `OCV视觉` | `gocv` | OpenCV 计算机视觉（滤波/边缘/轮廓/特征/视频） |
+| 👁 | `OCV 视觉` | `gocv` | OpenCV 计算机视觉（滤波/边缘/轮廓/特征/视频） |
+
+#### lancet 集成模块（v2.5.2 新增）
+
+| 模块 | 文件 | 功能 |
+|:----:|:-----|:-----|
+| 🔢 | `L 算法` | 排序算法（快速/归并/插入/选择）、搜索算法（二分/线性）、LRU 缓存 |
+| ⚖️ | `C 比较` | 数值比较、浮点近似相等、深度相等判断 |
+| 🧮 | `M 数学` | 统计运算（和/平均/最大/最小）、序列生成（阶乘/斐波那契）、质数判断 |
+| 🔄 | `R 重试` | 重试机制（指数退避/条件重试） |
+| ✂️ | `S 切片操作` | 去重、集合运算（差集/交集）、过滤映射、反转排序 |
+| 📝 | `S 字符串增强` | 字符串反转、大小写转换、命名格式转换、字符统计 |
+| 🗺️ | `MMap 操作` | Map 键值提取、合并、过滤、转换 |
+| 🔀 | `C 深度克隆` | 深度克隆、结构体互转、指针操作、字节编解码 |
+| 🎯 | `D 条件` | 布尔逻辑运算（与/或/异或/非） |
 
 #### 企业级模块（v2.0.0 新增）
 
@@ -320,16 +335,33 @@ Demo 涵盖内容：
 | [xorm](https://xorm.io/xorm) | ORM 数据库操作 |
 | [imaging](https://github.com/disintegration/imaging) | 图片处理（缩放/裁剪/旋转/效果） |
 | [gocv](https://gocv.io/) | OpenCV 4.x 计算机视觉 |
+| [golang.org/x/exp/constraints](https://pkg.go.dev/golang.org/x/exp/constraints) | Go 泛型约束类型 |
 
 ## 📖 文档
 
 | 文档 | 说明 |
 |:-----|:-----|
-| [API 参考文档](API_Reference.md) | 全部 700+ 函数的详细说明 |
+| [API 参考文档](API_Reference.md) | 全部 935+ 函数的详细说明 |
 | [Code Wiki](Code_Wiki.md) | 项目架构与模块详解 |
 | [英文版文档](en/README.md) | `en/` 英文命名版完整文档 |
 
 ## 📋 更新日志
+
+### v2.5.2 (2026-06-28)
+
+**🔢 lancet 库集成（9 个新模块，100+ 函数）**
+- 新增 `L 算法` — 排序算法（快速/归并/插入/选择）、搜索算法（二分/线性）、LRU 缓存实现
+- 新增 `C 比较` — 数值比较、浮点近似相等、深度相等判断
+- 新增 `M 数学` — 统计运算（和/平均/最大/最小）、序列生成（阶乘/斐波那契）、质数判断
+- 新增 `R 重试` — 重试机制（指数退避/条件重试）
+- 新增 `S 切片操作` — 去重、集合运算（差集/交集）、过滤映射、反转排序
+- 新增 `S 字符串增强` — 字符串反转、大小写转换、命名格式转换、字符统计
+- 新增 `MMap 操作` — Map 键值提取、合并、过滤、转换
+- 新增 `C 深度克隆` — 深度克隆、结构体互转、指针操作、字节编解码
+- 新增 `D 条件` — 布尔逻辑运算（与/或/异或/非）
+- 所有函数提供中英文双版本（utils/ 和 en/utils/）
+- 使用 Go 泛型实现类型安全
+- API 文档完整更新，包含详细示例
 
 ### v2.5.1 (2026-05-26)
 

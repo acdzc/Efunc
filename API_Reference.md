@@ -3160,4 +3160,499 @@ fmt.Println("结果:", result)
 | utils/HHook | 1 | 14 |
 | utils/H汇编_汇编器 | 1 | 4 |
 | utils/H汇编_汇编指令 | 1 | 40+ |
-| **合计** | **64** | **840+** |
+| **utils/L算法** | **1** | **10+** |
+| **utils/C比较** | **1** | **7** |
+| **utils/D条件** | **1** | **8** |
+| **utils/C深度克隆** | **1** | **10** |
+| **utils/M数学** | **1** | **12** |
+| **utils/R重试** | **1** | **3** |
+| **utils/S切片操作** | **1** | **16** |
+| **utils/S字符串增强** | **1** | **19** |
+| **utils/MMap操作** | **1** | **15** |
+| **合计** | **73** | **935+** |
+
+---
+
+## 2.57 L 算法（排序与查找）
+
+> 源文件：`utils/L 算法.go` | 用途：提供常见的排序、查找算法及 LRU 缓存实现
+
+### 排序算法
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `LQuickSort` | `func LQuickSort(nums []int)` | 快速排序（升序），修改原切片 |
+| `LMergeSort` | `func LMergeSort(nums []int) []int` | 归并排序（升序），返回新切片 |
+| `LInsertionSort` | `func LInsertionSort(nums []int)` | 插入排序（升序），修改原切片 |
+| `LSelectionSort` | `func LSelectionSort(nums []int)` | 选择排序（升序），修改原切片 |
+
+**示例**：
+
+```go
+nums := []int{5, 2, 8, 1, 9}
+LQuickSort(nums)              // [1, 2, 5, 8, 9]
+sorted := LMergeSort(nums)    // 不修改原切片
+```
+
+### 查找算法
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `LBinarySearch` | `func LBinarySearch(nums []int, target int) int` | 二分查找；未找到返回 -1 |
+| `LLinearSearch` | `func LLinearSearch[T comparable](slice []T, target T) int` | 线性查找；泛型支持 |
+
+**示例**：
+
+```go
+nums := []int{1, 2, 5, 8, 9}
+idx := LBinarySearch(nums, 5)     // 2
+idx = LLinearSearch([]string{"a","b"}, "b")  // 1
+```
+
+### LRU 缓存
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `NewLRUCache` | `func NewLRUCache(capacity int) *LRUCache` | 创建 LRU 缓存实例 |
+| `(LRUCache) Get` | `func (l *LRUCache) Get(key int) (interface{}, bool)` | 获取值 |
+| `(LRUCache) Put` | `func (l *LRUCache) Put(key int, value interface{})` | 放入值 |
+| `(LRUCache) Clear` | `func (l *LRUCache) Clear()` | 清空缓存 |
+| `(LRUCache) Size` | `func (l *LRUCache) Size() int` | 获取缓存大小 |
+
+**示例**：
+
+```go
+cache := NewLRUCache(3)
+cache.Put(1, "one")
+val, ok := cache.Get(1)  // "one", true
+```
+
+---
+
+## 2.58 C 比较（数值比较）
+
+> 源文件：`utils/C 比较.go` | 用途：提供多种类型的比较函数
+
+### 相等比较
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `CompareEqual` | `func CompareEqual[T comparable](a, b T) bool` | 类型 + 值都相等 |
+| `CompareValueEqual` | `func CompareValueEqual(a, b interface{}) bool` | 深度值相等（reflect.DeepEqual） |
+
+**示例**：
+
+```go
+CompareEqual(1, 1)        // true
+CompareValueEqual([]int{1,2}, []int{1,2})  // true
+```
+
+### 大小比较
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `LessThan` | `func LessThan[T constraints.Ordered](left, right T) bool` | left < right |
+| `GreaterThan` | `func GreaterThan[T constraints.Ordered](left, right T) bool` | left > right |
+| `LessOrEqual` | `func LessOrEqual[T constraints.Ordered](left, right T) bool` | left <= right |
+| `GreaterOrEqual` | `func GreaterOrEqual[T constraints.Ordered](left, right T) bool` | left >= right |
+
+**示例**：
+
+```go
+LessThan(1, 2)    // true
+GreaterThan(3, 2) // true
+```
+
+### 浮点比较
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `FloatApproxEqual` | `func FloatApproxEqual(a, b, delta float64) bool` | 在误差范围内近似相等 |
+
+**示例**：
+
+```go
+FloatApproxEqual(3.14159, 3.14160, 0.0001)  // true
+```
+
+---
+
+## 2.59 D 条件（条件判断）
+
+> 源文件：`utils/D 条件.go` | 用途：布尔逻辑运算和条件判断
+
+### 真值判断
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `ConditionTrue` | `func ConditionTrue(value interface{}) bool` | 判断值的真假 |
+
+**示例**：
+
+```go
+ConditionTrue(true)       // true
+ConditionTrue("")         // false
+ConditionTrue(0)          // false
+```
+
+### 逻辑运算
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `LogicalAnd` | `func LogicalAnd(a, b bool) bool` | 逻辑与 (&&) |
+| `LogicalOr` | `func LogicalOr(a, b bool) bool` | 逻辑或 (\|\|) |
+| `LogicalXor` | `func LogicalXor(a, b bool) bool` | 逻辑异或 |
+| `LogicalXnor` | `func LogicalXnor(a, b bool) bool` | 逻辑同或 |
+| `LogicalNor` | `func LogicalNor(a, b bool) bool` | 逻辑或非 |
+| `LogicalNand` | `func LogicalNand(a, b bool) bool` | 逻辑与非 |
+
+### 三元运算符
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `TernaryOperator` | `func TernaryOperator[T any](condition bool, trueVal, falseVal T) T` | 泛型三元运算符 |
+
+**示例**：
+
+```go
+result := TernaryOperator(true, "是", "否")  // "是"
+age := TernaryOperator(age >= 18, "成年", "未成年")
+```
+
+---
+
+## 2.60 C 深度克隆（类型转换）
+
+> 源文件：`utils/C 深度克隆.go` | 用途：深拷贝、结构体转换、指针操作
+
+### 深拷贝
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `DeepClone` | `func DeepClone(src interface{}) (interface{}, error)` | 深拷贝（JSON 序列化方式） |
+
+**示例**：
+
+```go
+src := map[string]int{"a": 1, "b": 2}
+dst, _ := DeepClone(src)
+```
+
+### 结构体转换
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `StructToMap` | `func StructToMap(s interface{}) (map[string]interface{}, error)` | 结构体转 Map |
+| `MapToStruct` | `func MapToStruct(m map[string]interface{}, structPtr interface{}) error` | Map 转结构体 |
+| `CopyProperties` | `func CopyProperties(source, destination interface{}) error` | 属性拷贝 |
+
+**示例**：
+
+```go
+type User struct { Name string; Age int }
+user := User{Name: "张三", Age: 25}
+m, _ := StructToMap(user)  // {"Name": "张三", "Age": 25}
+```
+
+### 指针操作
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `PointerToValue` | `func PointerToValue[T any](ptr *T) T` | 指针转值 |
+| `ValueToPointer` | `func ValueToPointer[T any](value T) *T` | 值转指针 |
+| `SliceToPointers` | `func SliceToPointers[T any](values []T) []*T` | 切片转指针切片 |
+| `PointersToSlice` | `func PointersToSlice[T any](pointers []*T) []T` | 指针切片转值切片 |
+
+### 字节编码
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `EncodeByte` | `func EncodeByte(data interface{}) ([]byte, error)` | 数据编码为字节 |
+| `DecodeByte` | `func DecodeByte(data []byte, target interface{}) error` | 字节解码为目标对象 |
+
+---
+
+## 2.61 M 数学（数学运算）
+
+> 源文件：`utils/M 数学.go` | 用途：常用数学计算和统计函数
+
+### 统计函数
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `MathSum` | `func MathSum(nums []int) int` | 求和 |
+| `MathAverage` | `func MathAverage(nums []int) float64` | 平均值 |
+| `MathMax` | `func MathMax(nums []int) int` | 最大值 |
+| `MathMin` | `func MathMin(nums []int) int` | 最小值 |
+
+**示例**：
+
+```go
+nums := []int{1, 2, 3, 4, 5}
+MathSum(nums)      // 15
+MathAverage(nums)  // 3.0
+MathMax(nums)      // 5
+```
+
+### 数列函数
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `Factorial` | `func Factorial(n int) int64` | 阶乘 |
+| `Fibonacci` | `func Fibonacci(n int) int64` | 斐波那契数 |
+| `IsPrime` | `func IsPrime(n int) bool` | 判断素数 |
+
+**示例**：
+
+```go
+Factorial(5)   // 120
+Fibonacci(10)  // 55
+IsPrime(7)     // true
+```
+
+### 其他数学函数
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `Abs` | `func Abs(n int) int` | 绝对值 |
+| `Pow` | `func Pow(base, exponent float64) float64` | 幂运算 |
+| `Sqrt` | `func Sqrt(n float64) float64` | 平方根 |
+| `PI` | `func PI() float64` | 圆周率 π |
+| `E` | `func E() float64` | 欧拉数 e |
+
+---
+
+## 2.62 R 重试（重试机制）
+
+> 源文件：`utils/R 重试.go` | 用途：带退避策略的重试执行
+
+### 基础重试
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `Retry` | `func Retry[T any](fn func() (T, error), maxRetries int, interval time.Duration) (T, error)` | 固定间隔重试 |
+
+**示例**：
+
+```go
+result, err := Retry(func() (string, error) {
+    return "success", nil
+}, 3, time.Second)
+```
+
+### 指数退避重试
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `ExponentialBackoffRetry` | `func ExponentialBackoffRetry[T any](fn func() (T, error), maxRetries int, baseInterval, maxInterval time.Duration) (T, error)` | 指数退避重试 |
+
+**示例**：
+
+```go
+result, err := ExponentialBackoffRetry(fn, 5, time.Second, time.Minute)
+// 间隔：1s -> 2s -> 4s -> ... -> 最多 1min
+```
+
+### 条件重试
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `RetryWithCondition` | `func RetryWithCondition[T any](fn func() (T, error), shouldRetry func(error) bool, maxRetries int, interval time.Duration) (T, error)` | 根据错误类型决定是否重试 |
+
+**示例**：
+
+```go
+RetryWithCondition(fn, func(err error) bool {
+    return err != nil && err.Error() == "retryable"
+}, 3, time.Second)
+```
+
+---
+
+## 2.63 S 切片操作（切片处理）
+
+> 源文件：`utils/S 切片操作.go` | 用途：切片去重、交集、差集等操作
+
+### 去重与集合运算
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `SliceDeduplicate` | `func SliceDeduplicate(nums []int) []int` | 整数切片去重 |
+| `GenericDeduplicate` | `func GenericDeduplicate[T comparable](slice []T) []T` | 泛型去重 |
+| `Difference` | `func Difference(a, b []int) []int` | 差集（a-b） |
+| `Intersection` | `func Intersection(a, b []int) []int` | 交集 |
+
+**示例**：
+
+```go
+a := []int{1, 2, 3, 4, 5}
+b := []int{3, 4, 5, 6, 7}
+Difference(a, b)    // [1, 2]
+Intersection(a, b)  // [3, 4, 5]
+```
+
+### 查找与过滤
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `Contains` | `func Contains[T comparable](slice []T, item T) bool` | 包含判断 |
+| `Filter` | `func Filter[T any](slice []T, condition func(T) bool) []T` | 条件过滤 |
+| `MapSlice` | `func MapSlice[T any, U any](slice []T, fn func(T) U) []U` | 映射转换 |
+
+### 切片操作
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `Reverse` | `func Reverse(nums []int)` | 反转整数切片 |
+| `GenericReverse` | `func GenericReverse[T any](slice []T)` | 泛型反转 |
+| `TakeFirstN` | `func TakeFirstN[T any](slice []T, n int) []T` | 取前 N 个 |
+| `TakeLastN` | `func TakeLastN[T any](slice []T, n int) []T` | 取后 N 个 |
+
+### 排序
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `Sort` | `func Sort(nums []int)` | 快速排序（升序） |
+| `SortDescending` | `func SortDescending(nums []int)` | 快速排序（降序） |
+| `GenericSort` | `func GenericSort[T any](slice []T, less func(a, b T) bool)` | 泛型排序 |
+
+---
+
+## 2.64 S 字符串增强（字符串处理）
+
+> 源文件：`utils/S 字符串增强.go` | 用途：字符串反转、格式转换、统计等
+
+### 反转与修剪
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `StringReverse` | `func StringReverse(s string) string` | 字符串反转 |
+| `TrimSpace` | `func TrimSpace(s string) string` | 去除首尾空格 |
+| `TrimLeft` | `func TrimLeft(s string) string` | 去除左侧空格 |
+| `TrimRight` | `func TrimRight(s string) string` | 去除右侧空格 |
+
+**示例**：
+
+```go
+StringReverse("hello")  // "olleh"
+TrimSpace("  hello  ")  // "hello"
+```
+
+### 大小写转换
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `ToLower` | `func ToLower(s string) string` | 转小写 |
+| `ToUpper` | `func ToUpper(s string) string` | 转大写 |
+| `FirstLetterToUpper` | `func FirstLetterToUpper(s string) string` | 首字母大写 |
+
+### 命名转换
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `CamelToSnake` | `func CamelToSnake(s string) string` | 驼峰转下划线 |
+| `SnakeToCamel` | `func SnakeToCamel(s string) string` | 下划线转驼峰 |
+
+**示例**：
+
+```go
+CamelToSnake("helloWorld")  // "hello_world"
+SnakeToCamel("user_name")   // "userName"
+```
+
+### 统计与判断
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `CountCharacters` | `func CountCharacters(s string) map[rune]int` | 统计字符次数 |
+| `CountWords` | `func CountWords(s string) int` | 统计字数 |
+| `ContainsSubstring` | `func ContainsSubstring(s, substr string) bool` | 包含子串 |
+| `HasPrefix` | `func HasPrefix(s, prefix string) bool` | 以某前缀开头 |
+| `HasSuffix` | `func HasSuffix(s, suffix string) bool` | 以某后缀结尾 |
+
+### 替换与分割
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `ReplaceAll` | `func ReplaceAll(s, old, new string) string` | 全局替换 |
+| `Split` | `func Split(s, sep string) []string` | 按分隔符分割 |
+| `Join` | `func Join(parts []string, sep string) string` | 拼接字符串 |
+| `Repeat` | `func Repeat(s string, count int) string` | 重复字符串 |
+
+### 截取
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `Substring` | `func Substring(s string, start int) string` | 从指定位置截取 |
+| `SubstringLength` | `func SubstringLength(s string, start, length int) string` | 截取指定长度 |
+
+---
+
+## 2.65 MMap 操作（Map 处理）
+
+> 源文件：`utils/MMap 操作.go` | 用途：Map 键值查询、转换、合并等操作
+
+### 键值提取
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `GetKeys` | `func GetKeys[K comparable, V any](m map[K]V) []K` | 获取所有键 |
+| `GetValues` | `func GetValues[K comparable, V any](m map[K]V) []V` | 获取所有值 |
+| `ContainsKey` | `func ContainsKey[K comparable, V any](m map[K]V, key K) bool` | 判断是否包含键 |
+
+**示例**：
+
+```go
+m := map[string]int{"a": 1, "b": 2}
+GetKeys(m)      // ["a", "b"]
+GetValues(m)    // [1, 2]
+```
+
+### 安全访问
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `SafeGet` | `func SafeGet[K comparable, V any](m map[K]V, key K, defaultVal V) V` | 安全取值（带默认值） |
+
+**示例**：
+
+```go
+SafeGet(m, "c", 0)  // 0（键不存在时返回默认值）
+```
+
+### 合并与转换
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `MergeMaps` | `func MergeMaps[K comparable, V any](maps ...map[K]V) map[K]V` | 合并多个 Map |
+| `MapToPairs` | `func MapToPairs[K comparable, V any](m map[K]V) [][]interface{}` | Map 转二维切片 |
+| `PairsToMap` | `func PairsToMap(pairs [][]interface{}) map[interface{}]interface{}` | 二维切片转 Map |
+
+### 过滤与映射
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `FilterMap` | `func FilterMap[K comparable, V any](m map[K]V, condition func(K, V) bool) map[K]V` | 过滤 Map |
+| `MapValues` | `func MapValues[K comparable, V any, U any](m map[K]V, fn func(V) U) map[K]U` | 映射值 |
+
+### 其他操作
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `MapLength` | `func MapLength[K comparable, V any](m map[K]V) int` | Map 长度 |
+| `ClearMap` | `func ClearMap[K comparable, V any](m map[K]V)` | 清空 Map |
+| `ReverseMap` | `func ReverseMap[K comparable, V comparable](m map[K]V) map[V]K` | 反向 Map |
+| `ExtractKeys` | `func ExtractKeys[K comparable, V any](maps ...map[K]V) map[K]struct{}` | 提取所有键 |
+| `ExtractValues` | `func ExtractValues[K comparable, V comparable](maps ...map[K]V) map[V]struct{}` | 提取所有值 |
+
+**示例**：
+
+```go
+m1 := map[string]int{"a": 1}
+m2 := map[string]int{"b": 2}
+merged := MergeMaps(m1, m2)  // {"a": 1, "b": 2}
+
+keys := ExtractKeys(m1, m2)  // {"a": {}, "b": {}}
+```
+
+---
